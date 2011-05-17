@@ -17,5 +17,20 @@ Get the binaries from her or get the code and build it in Visual Studio 2010. I 
 === Code
 
 
+	INotification notification = new Prowlin.Notification()
+	                                 {
+ 	                                    Application = "Prowlin.Console",
+ 	                                    Description = "Testing",
+ 	                                    Event = "Some Event",
+ 	                                    Priority = NotificationPriority.High,
+ 	                                    Url = "http://www.nnihlen.com/blog"
+ 	                                };
+	notification.AddApiKey("<your-very-secret-apikey-goes-here>");
+
+	ProwlClient prowlClient = new ProwlClient();
+	int remaingMessages = prowlClient.SendNotification(notification);
+	
+	System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages.ToString());
+
 
 === Command Line
