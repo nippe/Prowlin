@@ -53,7 +53,7 @@ namespace Prowlin
                     throw new ApplicationException(errMsg);
                 }
 
-                int.TryParse(resultDocument.Descendants("success").ElementAt(0).Attribute("remaing").Value,
+                int.TryParse(resultDocument.Descendants("success").ElementAt(0).Attribute("remaining").Value,
                              out remaingNoOfMessages);
 
             }
