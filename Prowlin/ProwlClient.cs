@@ -18,11 +18,7 @@ namespace Prowlin
             _httpInterface = httpInterface;
         }
 
-
-        //Validate using DataAnnotations: http://stackoverflow.com/questions/2050161/validating-dataannotations-with-validator-class
-
-
-        public void SendNotification(INotification notification) {
+        public int SendNotification(INotification notification) {
             //Validate Object
 
             var context = new ValidationContext(notification, null, null);
@@ -37,7 +33,7 @@ namespace Prowlin
 
 
             //Send Prowl Notification
-            _httpInterface.SendNotification(notification);
+            return _httpInterface.SendNotification(notification);
 
             //Return no of messages left
             //_httpInterface.SendNotification();

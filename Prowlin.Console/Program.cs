@@ -24,7 +24,9 @@ namespace Prowlin.Console
             notification.AddApiKey("589a2d241e6ea26a11c994af835012eb3230f39f");
 
             ProwlClient prowlClient = new ProwlClient();
-            prowlClient.SendNotification(notification);
+            int remaingMessages = prowlClient.SendNotification(notification);
+
+            System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages.ToString());
         }
     }
 }

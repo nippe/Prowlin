@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Xml.Linq;
 using Prowlin;
 
 namespace Prowlin
@@ -20,7 +21,7 @@ namespace Prowlin
 
     public class HttpInterface : IHttpInterface
     {
-        private readonly string BASE_URL = " http://api.prowlapp.com/publicapi/";
+        private readonly string BASE_URL = " https://api.prowlapp.com/publicapi/";
         //private readonly string BASE_URL = " https://prowl.weks.net/publicapi/";
 
         public int SendNotification(INotification notification) {
@@ -37,9 +38,28 @@ namespace Prowlin
 
             WebResponse response = default(WebResponse);
 
-            response = httpWebRequest.GetResponse();
+            try {
+                response = httpWebRequest.GetResponse();
+            }
+            catch (TimeoutException e) {
+                throw new TimeoutException("Timeout delivery uncertain");
+            }
+            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
+            int remaingNoOfMessages = 0;
+            
+            if (resultDocument != null) {
+                if(resultDocument.Descendants("error").Count() > 0 ) {
+                    string errMsg = resultDocument.Descendants("error").ElementAt(0).Attribute("code").Value;
+                    throw new ApplicationException(errMsg);
+                }
 
-            return 12;
+                int.TryParse(resultDocument.Descendants("success").ElementAt(0).Attribute("remaing").Value,
+                             out remaingNoOfMessages);
+
+            }
+
+
+            return remaingNoOfMessages;
         }
 
         public void SendVerification() {
