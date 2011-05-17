@@ -37,9 +37,10 @@ namespace Prowlin
 
 
             //Send Prowl Notification
+            _httpInterface.SendNotification(notification);
 
             //Return no of messages left
-            _httpInterface.SendNotification();
+            //_httpInterface.SendNotification();
         }
     }
 }

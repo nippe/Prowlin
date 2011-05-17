@@ -131,6 +131,7 @@ namespace Prowlin.UnitTests
             Assert.Throws(typeof (ArgumentException), delegate { prowlClient.SendNotification(n); });
         }
 
+
         [Fact]
         public void Url_with_more_than_512_characters_should_not_pass_validation_and_throw_ArgumentException() {
             var fakeHttpInterface = new FakeHttpInterface();
@@ -151,13 +152,5 @@ namespace Prowlin.UnitTests
             Assert.Throws(typeof (ArgumentException), delegate { prowlClient.SendNotification(n); });
         }
 
-
-
-
-
-        /***
-         * IProwlClient c = new ProwlClient(Configuration)
-         * c.Send(Notification)
-         */
     }
 }

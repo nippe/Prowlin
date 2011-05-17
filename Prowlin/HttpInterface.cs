@@ -20,20 +20,24 @@ namespace Prowlin
 
     public class HttpInterface : IHttpInterface
     {
-        private readonly string BASE_URL = " https://api.prowlapp.com/publicapi/";
+        private readonly string BASE_URL = " http://api.prowlapp.com/publicapi/";
+        //private readonly string BASE_URL = " https://prowl.weks.net/publicapi/";
 
         public int SendNotification(INotification notification) {
 
             Dictionary<string, string > parameters = new Dictionary<string, string>();
-            parameters.Add("application", notification.Application);
-            parameters.Add("event", notification.Event);
-            parameters.Add("description", notification.Description);
-            parameters.Add("priority", notification.Priority.ToString());
             parameters.Add("apikey", notification.Keys);
+            parameters.Add("application", notification.Application);
+            parameters.Add("description", notification.Description);
+            parameters.Add("event", notification.Event);
+            parameters.Add("priority", Convert.ToInt32(notification.Priority).ToString());
+            parameters.Add("url", notification.Url);
 
             HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.Add, parameters);
 
-            HttpWebResponse response = default(HttpWebResponse);
+            WebResponse response = default(WebResponse);
+
+            response = httpWebRequest.GetResponse();
 
             return 12;
         }
@@ -71,7 +75,7 @@ namespace Prowlin
 
             HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
             request.Method = httpVerb;
-            request.Timeout = 10*1000; //10 seconds
+            //request.Timeout = 10*1000; //10 seconds
             request.ContentType = "application/x-www-form-urlencoded";
 
             return request;
