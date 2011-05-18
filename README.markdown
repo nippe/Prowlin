@@ -1,5 +1,5 @@
 ﻿Prowlin
-========
+=======
 
 The purpose of Prowlin is to provide a .Net library and command line tool for sending notifictions to iPhone's/iPad's using the Prowl service and app, check it out at http://www.prowlapp.com.
 
@@ -15,7 +15,7 @@ Installation
 Get the binaries from her or get the code and build it in Visual Studio 2010. I use .Net Framework Version 4.
 
 Usage
---------
+-----
 ### Code
 
 
@@ -37,6 +37,8 @@ Usage
 
 
 ### Command Line
+
+Not implemented yet.
 
 
 Dependencies

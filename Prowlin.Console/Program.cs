@@ -21,7 +21,7 @@ namespace Prowlin.Console
                                                  Priority = NotificationPriority.High,
                                                  Url = "http://www.nnihlen.com/blog"
                                              };
-            notification.AddApiKey("589a2d241e6ea26a11c994af835012eb3230f39f");
+            notification.AddApiKey("<your-apikey(s)-goes here>");
 
             ProwlClient prowlClient = new ProwlClient();
             int remaingMessages = prowlClient.SendNotification(notification);
