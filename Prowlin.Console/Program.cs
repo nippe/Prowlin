@@ -26,7 +26,7 @@ namespace Prowlin.Console
         private void Run(string[] args) {
             ArgumentsObject arguments = Configuration.Configure<ArgumentsObject>().CreateAndBind(args);
 
-            if(arguments.Help) {
+            if(arguments.Help || args.Length == 0) {
                 ShowHelp();
                 return;
             }
@@ -86,14 +86,22 @@ namespace Prowlin.Console
         }
 
         private void ShowHelp() {
-            System.Console.WriteLine("Prowlin version {0}", "0.8.0.0" );
+            System.Console.WriteLine("");
+            System.Console.WriteLine("Prowlin version {0}", "0.8.0.0");
             System.Console.WriteLine("" );
             System.Console.WriteLine("USAGE:" );
-            System.Console.WriteLine("\t\t> Prowlin -k one_apikey -e \"event X\" -a \"Application Y\"" );
-            System.Console.WriteLine("\t\t> Prowlin -k apikey_one,apikey_two,... -e \"event X\" -a \"Application Y\"" );
-            System.Console.WriteLine("\tOptions:" );
-            System.Console.WriteLine("\t-k, -key\tAPIKEY(s)" );
-            System.Console.WriteLine("" );
+            System.Console.WriteLine("\t> Prowlin -k one_apikey -e \"event X\" -a \"Application Y\"" );
+            System.Console.WriteLine("\t> Prowlin -k apikey_one,apikey_two,... -e \"event X\" -a \"Application Y\"" );
+            System.Console.WriteLine("");
+            System.Console.WriteLine("   Options:");
+            System.Console.WriteLine("\t-k, -key\t\tAPIKEY(s)\tProwl API key, one or many separated by commas" );
+            System.Console.WriteLine("\t-a, -application\tAPPLICATION\tApplication" );
+            System.Console.WriteLine("\t-e, -event\t\tEVENT\t\tEvent" );
+            System.Console.WriteLine("\t-d, -description\tDESCRIPTION\tDescription" );
+            System.Console.WriteLine("\t-p, -priority\t\tPRIORITY\tPriority - VERYLOW, MODERATE, NORMAL(default), HIGH, EMERGENCY" );
+            System.Console.WriteLine("\t-u, -url\t\tURL\t\tUrl");
+            System.Console.WriteLine("\t-h, -help\t\tHELP\t\tThis screen");
+            System.Console.WriteLine("");
             System.Console.WriteLine("" );
             System.Console.WriteLine("" );
         }
