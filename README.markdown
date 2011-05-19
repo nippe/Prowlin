@@ -38,12 +38,23 @@ Usage
 
 ### Command Line
 
-Not implemented yet.
+      > Prowlin -k one_apikey -e "event X" -a "Application Y"
+      > Prowlin -k apikey_one,apikey_two,... -e "event X" -a "Application Y"
+
+      Options:
+        -k, -key                APIKEY(s)       Prowl API key, one or many separated by commas
+        -a, -application        APPLICATION     Application
+        -e, -event              EVENT           Event
+        -d, -description        DESCRIPTION     Description
+        -p, -priority           PRIORITY        Priority - VERYLOW, MODERATE, NORMAL(default), HIGH, EMERGENCY
+        -u, -url                URL             Url
+        -h, -help               HELP            This screen
 
 
 Dependencies
 ------------
 
 * xUnit for unit tests
+* Args for parsing command line arguments
 * .Net framework 4
 
