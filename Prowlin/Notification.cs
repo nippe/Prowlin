@@ -36,7 +36,7 @@ namespace Prowlin
         [StringLength(1024)]
         public string Event { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(10000)]
         public string Description { get; set; }
     }

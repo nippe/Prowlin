@@ -113,7 +113,7 @@ namespace Prowlin
             }
             sb.Append(method);
 
-            if(parameters != null) {
+            if(parameters != null && parameters.Count > 0) {
                 sb.Append("?");
                 sb.Append(this.BuildParameterString(parameters));
             }

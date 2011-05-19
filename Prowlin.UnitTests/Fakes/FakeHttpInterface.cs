@@ -17,7 +17,8 @@ namespace Prowlin.UnitTests.Fakes
         }
 
         public int SendNotification(INotification notification) {
-            throw new NotImplementedException();
+            _sendNotificationsCalled = true;
+            return 900;
         }
 
         public void SendVerification() {
