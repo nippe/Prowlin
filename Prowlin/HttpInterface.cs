@@ -25,14 +25,10 @@ namespace Prowlin
         //private readonly string BASE_URL = " https://prowl.weks.net/publicapi/";
 
         public int SendNotification(INotification notification) {
+        
+            RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
 
-            Dictionary<string, string > parameters = new Dictionary<string, string>();
-            parameters.Add("apikey", notification.Keys);
-            parameters.Add("application", notification.Application);
-            parameters.Add("description", notification.Description);
-            parameters.Add("event", notification.Event);
-            parameters.Add("priority", Convert.ToInt32(notification.Priority).ToString());
-            parameters.Add("url", notification.Url);
+            Dictionary<string, string> parameters = requestBuilderHelper.BuildDictionaryForNotificataion(notification);
 
             HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.Add, parameters);
 
@@ -62,25 +58,20 @@ namespace Prowlin
             return remaingNoOfMessages;
         }
 
+        
+
         public void SendVerification() {
             
         }
 
 
 
-        public string BuildParameterString(Dictionary<string, string> parameters) {
-            IList<string> s = new List<string>(parameters.Count);
-            foreach (var parameter in parameters) {
-               s.Add( string.Format("{0}={1}", parameter.Key, 
-                   HttpUtility.UrlEncode( parameter.Value)) );
-            }
-
-            return string.Join("&", s.ToArray());
-        }
+       
 
 
         public HttpWebRequest BuildRequest(string baseUrl, string method, Dictionary<string, string> parameters) {
 
+            RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
             string httpVerb;
 
             if(method == Method.Add) {
@@ -91,7 +82,7 @@ namespace Prowlin
             }
 
 
-            Uri uri = new Uri(BuildRequestUrl(BASE_URL, method, parameters));
+            Uri uri = new Uri(requestBuilderHelper.BuildRequestUrl(BASE_URL, method, parameters));
 
             HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
             request.Method = httpVerb;
@@ -102,23 +93,5 @@ namespace Prowlin
         }
 
 
-
-        public string BuildRequestUrl(string baseUrl, string method, Dictionary<string, string> parameters) {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(baseUrl);
-
-            if(baseUrl.EndsWith("/") == false) {
-                sb.Append("/");
-            }
-            sb.Append(method);
-
-            if(parameters != null && parameters.Count > 0) {
-                sb.Append("?");
-                sb.Append(this.BuildParameterString(parameters));
-            }
-
-            return sb.ToString();
-        }
     }
 }
