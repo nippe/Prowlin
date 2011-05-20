@@ -52,5 +52,12 @@ namespace Prowlin
 
             return sb.ToString();
         }
+
+        public Dictionary<string, string> BuildDictionaryForVerification(IVerification verification) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("apikey", verification.ApiKey);
+            parameters.Add("application", verification.ProviderKey);
+            return parameters;
+        }
     }
 }

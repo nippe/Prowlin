@@ -21,7 +21,7 @@ namespace Prowlin.UnitTests.Fakes
             return 900;
         }
 
-        public void SendVerification() {
+        public VerificationResult SendVerification(IVerification verification) {
             throw new NotImplementedException();
         }
 

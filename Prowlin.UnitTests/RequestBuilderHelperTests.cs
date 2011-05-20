@@ -85,6 +85,17 @@ namespace Prowlin.UnitTests
         }
 
         [Fact]
+        public void reqeust_uri_should_build_correctly_for_verify_with_trailing_slash()
+        {
+            Dictionary<string, string> d = new Dictionary<string, string>();
+
+            RequestBuilderHelper helper = new RequestBuilderHelper();
+            string url = helper.BuildRequestUrl("http://www.nnihlen.com/blog/", Method.Verify, d);
+
+            Assert.Equal("http://www.nnihlen.com/blog/verify", url);
+        }
+
+        [Fact]
         public void reqeust_uri_should_build_correctly_for_add_without_trailing_slash()
         {
             Dictionary<string, string> d = new Dictionary<string, string>();

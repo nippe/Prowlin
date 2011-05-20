@@ -60,8 +60,37 @@ namespace Prowlin
 
         
 
-        public void SendVerification() {
-            
+        public VerificationResult SendVerification(IVerification verification) {
+            RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
+
+            string http = GetHttpMethod(Method.Verify);
+
+            Dictionary<string, string> parameters = requestBuilderHelper.BuildDictionaryForVerification(verification);
+
+            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.Verify, parameters);
+
+            WebResponse response = default(WebResponse);
+
+            try {
+                response = httpWebRequest.GetResponse();
+            }
+            catch (TimeoutException e) {
+                throw new TimeoutException("Timeout delivery uncertain");
+            }
+
+            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
+            int remaingNoOfMessages = 0;
+
+            if (resultDocument != null)
+            {
+                if (resultDocument.Descendants("error").Count() > 0)
+                {
+                    string errMsg = resultDocument.Descendants("error").ElementAt(0).Attribute("code").Value;
+                    throw new ApplicationException(errMsg);
+                }
+            }
+
+            return new VerificationResult();
         }
 
 
@@ -74,12 +103,7 @@ namespace Prowlin
             RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
             string httpVerb;
 
-            if(method == Method.Add) {
-                httpVerb = "POST";
-            }
-            else {
-                httpVerb = "GET";
-            }
+            httpVerb = GetHttpMethod(method);
 
 
             Uri uri = new Uri(requestBuilderHelper.BuildRequestUrl(BASE_URL, method, parameters));
@@ -92,6 +116,15 @@ namespace Prowlin
             return request;
         }
 
-
+        private string GetHttpMethod(string method) {
+            string httpVerb;
+            if(method == Method.Add) {
+                httpVerb = "POST";
+            }
+            else {
+                httpVerb = "GET";
+            }
+            return httpVerb;
+        }
     }
 }

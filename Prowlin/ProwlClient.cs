@@ -38,5 +38,21 @@ namespace Prowlin
             //Return no of messages left
             //_httpInterface.SendNotification();
         }
+
+        public VerificationResult SendVerification(IVerification verification) {
+            var context = new ValidationContext(verification, null, null);
+            var results = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(verification, context, results, true);
+
+            if (valid == false) {
+                foreach (var validationResult in results) {
+                    throw new ArgumentException(validationResult.ErrorMessage);
+                }
+            }
+
+            return _httpInterface.SendVerification(verification);
+            return new VerificationResult();
+
+        }
     }
 }

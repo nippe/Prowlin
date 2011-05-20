@@ -14,6 +14,8 @@ namespace Prowlin.Console
         public string Priority = string.Empty;
         public string Url = string.Empty;
         public bool Help = false;
+        public bool Verify = false;
+        public string ProviderKey = string.Empty;
     }
 
     internal class Program
@@ -26,6 +28,9 @@ namespace Prowlin.Console
         private void Run(string[] args) {
             ArgumentsObject arguments = Configuration.Configure<ArgumentsObject>().CreateAndBind(args);
 
+            var prowlClient = new ProwlClient();
+
+
             if(arguments.Help || args.Length == 0) {
                 ShowHelp();
                 return;
@@ -36,53 +41,60 @@ namespace Prowlin.Console
                 return;
             }
 
-            if (string.IsNullOrEmpty(arguments.Event)) {
-                System.Console.WriteLine("Event is required");
-                return;
-            }
+            if(!arguments.Verify) {
+                if (string.IsNullOrEmpty(arguments.Event)) {
+                    System.Console.WriteLine("Event is required");
+                    return;
+                }
   
-            if (string.IsNullOrEmpty(arguments.Application)) {
-                System.Console.WriteLine("Application is required");
-                return;
+                if (string.IsNullOrEmpty(arguments.Application)) {
+                    System.Console.WriteLine("Application is required");
+                    return;
+                }
+
+                var notification = new Notification
+                                       {
+                                           Application = arguments.Application,
+                                           Description = arguments.Description,
+                                           Event = arguments.Event,
+                                           Url = arguments.Url
+                                       };
+
+
+                switch (arguments.Priority.ToLower()) {
+                    case "verylow":
+                        notification.Priority = NotificationPriority.VeryLow;
+                        break;
+                    case "moderate":
+                        notification.Priority = NotificationPriority.Moderate;
+                        break;
+                    case "high":
+                        notification.Priority = NotificationPriority.High;
+                        break;
+                    case "emergency":
+                        notification.Priority = NotificationPriority.Emergency;
+                        break;
+                    default:
+                        notification.Priority = NotificationPriority.Normal;
+                        break;
+                }
+
+                foreach (string s in arguments.Key.Split(new[] {',', ';'})) {
+                    notification.AddApiKey(s);
+                }
+
+
+                int remaingMessages = prowlClient.SendNotification(notification);
+
+                System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages);
             }
-
-            var notification = new Notification
-                                   {
-                                       Application = arguments.Application,
-                                       Description = arguments.Description,
-                                       Event = arguments.Event,
-                                       Url = arguments.Url
-                                   };
-
-
-            switch (arguments.Priority.ToLower()) {
-                case "verylow":
-                    notification.Priority = NotificationPriority.VeryLow;
-                    break;
-                case "moderate":
-                    notification.Priority = NotificationPriority.Moderate;
-                    break;
-                case "high":
-                    notification.Priority = NotificationPriority.High;
-                    break;
-                case "emergency":
-                    notification.Priority = NotificationPriority.Emergency;
-                    break;
-                default:
-                    notification.Priority = NotificationPriority.Normal;
-                    break;
+            else {
+                IVerification v = new Verification();
+                v.ApiKey = arguments.Key;
+                v.ProviderKey = arguments.ProviderKey;
+                System.Console.WriteLine("Sending verification");
+                VerificationResult verificationResult = prowlClient.SendVerification(v);
             }
-
-
-            foreach (string s in arguments.Key.Split(new[] {',', ';'})) {
-                notification.AddApiKey(s);
-            }
-
-
-            var prowlClient = new ProwlClient();
-            int remaingMessages = prowlClient.SendNotification(notification);
-
-            System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages);
         }
 
         private void ShowHelp() {

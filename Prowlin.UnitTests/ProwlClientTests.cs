@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Net;
 using Prowlin.UnitTests.Fakes;
 using Xunit;
-using Prowlin;
 
 namespace Prowlin.UnitTests
 {
@@ -79,7 +77,7 @@ namespace Prowlin.UnitTests
             var fakeHttpInterface = new FakeHttpInterface();
             var prowlClient = new ProwlClient(fakeHttpInterface);
 
-            string appStr = new string('n', 257);
+            var appStr = new string('n', 257);
             var n = new Notification
                         {
                             Application = appStr,
@@ -122,7 +120,8 @@ namespace Prowlin.UnitTests
                         {
                             Application = "Application",
                             Description = "foo",
-                            Event = evt, //Toooo long
+                            Event = evt,
+                            //Toooo long
                             Priority = NotificationPriority.Normal,
                             Url = "http://www.nnihle.com/blog"
                         };
@@ -143,7 +142,7 @@ namespace Prowlin.UnitTests
                         {
                             Application = "Application",
                             Description = "foo",
-                            Event = "evnet", 
+                            Event = "evnet",
                             Priority = NotificationPriority.Normal,
                             Url = url
                         };
@@ -152,5 +151,48 @@ namespace Prowlin.UnitTests
             Assert.Throws(typeof (ArgumentException), delegate { prowlClient.SendNotification(n); });
         }
 
+        [Fact]
+        public void Verification_apikey_not_present_throws_validation_ArgumentException() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var verification = new Verification
+                                   {
+                                       ProviderKey = "1234567890123456789012345678901234567890"
+                                   };
+
+            Assert.Throws(typeof (ArgumentException),
+                          delegate { prowlClient.SendVerification(verification); });
+        } 
+        
+        [Fact]
+        public void Verification_apikey_wrong_length_throws_validation_ArgumentException() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var verification = new Verification
+                                   {
+                                       ApiKey = "12345678678901234567890"
+                                   };
+
+            Assert.Throws(typeof (ArgumentException),
+                          delegate { prowlClient.SendVerification(verification); });
+        }  
+        
+
+        [Fact]
+        public void Verification_ProviderKey_wrong_length_throws_validation_ArgumentException() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var verification = new Verification
+                                   {
+                                       ApiKey = "123456789012345678901234567890",
+                                       ProviderKey = "ewrwe"
+                                   };
+
+            Assert.Throws(typeof (ArgumentException),
+                          delegate { prowlClient.SendVerification(verification); });
+        }
     }
 }
