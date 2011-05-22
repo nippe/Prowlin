@@ -94,6 +94,11 @@ namespace Prowlin.Console
                 v.ProviderKey = arguments.ProviderKey;
                 System.Console.WriteLine("Sending verification");
                 VerificationResult verificationResult = prowlClient.SendVerification(v);
+                System.Console.WriteLine("Verification {3}\nVerification returned: {0}, no of messages left to send: {1}, reset time: {2}", 
+                    verificationResult.ResultCode,
+                    verificationResult.RemainingMessageCount.ToString(),
+                    verificationResult.TimeStamp,
+                    verificationResult.ResultCode == "200"?"OK":"NOT OK");
             }
         }
 

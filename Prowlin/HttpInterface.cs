@@ -80,17 +80,31 @@ namespace Prowlin
 
             XDocument resultDocument = XDocument.Load(response.GetResponseStream());
             int remaingNoOfMessages = 0;
+            string timestamp = string.Empty;
+            string returnCode = string.Empty;
+            string errMsg = string.Empty;
 
             if (resultDocument != null)
             {
                 if (resultDocument.Descendants("error").Count() > 0)
                 {
-                    string errMsg = resultDocument.Descendants("error").ElementAt(0).Attribute("code").Value;
-                    throw new ApplicationException(errMsg);
+                    errMsg = resultDocument.Descendants("error").ElementAt(0).Attribute("code").Value;
                 }
+
+                int.TryParse(resultDocument.Descendants("success").ElementAt(0).Attribute("remaining").Value,
+                             out remaingNoOfMessages);
+                timestamp = resultDocument.Descendants("success").ElementAt(0).Attribute("resetdate").Value;
+
+                returnCode = resultDocument.Descendants("success").ElementAt(0).Attribute("code").Value;
             }
 
-            return new VerificationResult();
+            return new VerificationResult()
+                       {
+                           ResultCode = returnCode,
+                           RemainingMessageCount = remaingNoOfMessages,
+                           TimeStamp = timestamp,
+                           ErrorMessage = errMsg
+                       };
         }
 
 

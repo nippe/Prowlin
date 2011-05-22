@@ -51,8 +51,6 @@ namespace Prowlin
             }
 
             return _httpInterface.SendVerification(verification);
-            return new VerificationResult();
-
         }
     }
 }
