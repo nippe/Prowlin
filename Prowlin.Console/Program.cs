@@ -109,6 +109,7 @@ namespace Prowlin.Console
             System.Console.WriteLine("USAGE:" );
             System.Console.WriteLine("\t> Prowlin -k one_apikey -e \"event X\" -a \"Application Y\"" );
             System.Console.WriteLine("\t> Prowlin -k apikey_one,apikey_two,... -e \"event X\" -a \"Application Y\"" );
+            System.Console.WriteLine("\t> Prowlin -v -k apikey" );
             System.Console.WriteLine("");
             System.Console.WriteLine("   Options:");
             System.Console.WriteLine("\t-k, -key\t\tAPIKEY(s)\tProwl API key, one or many separated by commas" );
@@ -118,7 +119,8 @@ namespace Prowlin.Console
             System.Console.WriteLine("\t-p, -priority\t\tPRIORITY\tPriority - VERYLOW, MODERATE, NORMAL(default), HIGH, EMERGENCY" );
             System.Console.WriteLine("\t-u, -url\t\tURL\t\tUrl");
             System.Console.WriteLine("\t-h, -help\t\tHELP\t\tThis screen");
-            System.Console.WriteLine("");
+            System.Console.WriteLine("\t-v, -verify\t\tVERIFIY\t\tVerification of key used in combination with -k (APIKEY) ");
+            System.Console.WriteLine("\t\t\t\t\t\tand (optional) -p (PROVIDER KEY)");
             System.Console.WriteLine("" );
             System.Console.WriteLine("" );
         }
