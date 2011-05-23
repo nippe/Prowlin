@@ -7,15 +7,16 @@ namespace Prowlin.Console
     [ArgsModel(SwitchDelimiter = "-")]
     public class ArgumentsObject
     {
-        public string Application = string.Empty;
-        public string Description = string.Empty;
-        public string Event = string.Empty;
-        public string Key = string.Empty;
-        public string Priority = string.Empty;
-        public string Url = string.Empty;
-        public bool Help = false;
-        public bool Verify = false;
-        public string ProviderKey = string.Empty;
+        public string   Application     = string.Empty;
+        public string   Description     = string.Empty;
+        public string   Event           = string.Empty;
+        public string   Key             = string.Empty;
+        public string   Priority        = string.Empty;
+        public string   Url             = string.Empty;
+        public bool     Help            = false;
+        public bool     Verify          = false;
+        public string   ProviderKey     = string.Empty;
+        public bool     Token           = false;
     }
 
     internal class Program
@@ -28,11 +29,23 @@ namespace Prowlin.Console
         private void Run(string[] args) {
             ArgumentsObject arguments = Configuration.Configure<ArgumentsObject>().CreateAndBind(args);
 
-            var prowlClient = new ProwlClient();
-
-
             if(arguments.Help || args.Length == 0) {
                 ShowHelp();
+                return;
+            }
+            
+            var prowlClient = new ProwlClient();
+            
+            if (arguments.Token)
+            {
+                RetrieveToken retrieveToken = new RetrieveToken();
+                retrieveToken.ProviderKey = arguments.ProviderKey;
+
+                RetrieveTokenResult result = prowlClient.RetreiveToken(retrieveToken);
+                System.Console.WriteLine("Token retreived\nToken: {0}\nUrl: {1}",
+                    result.Token,
+                    result.Url);
+
                 return;
             }
 
@@ -41,27 +54,42 @@ namespace Prowlin.Console
                 return;
             }
 
-            if(!arguments.Verify) {
-                if (string.IsNullOrEmpty(arguments.Event)) {
+            if(arguments.Verify) {
+                IVerification v = new Verification();
+                v.ApiKey = arguments.Key;
+                v.ProviderKey = arguments.ProviderKey;
+                System.Console.WriteLine("Sending verification...");
+                VerificationResult verificationResult = prowlClient.SendVerification(v);
+                System.Console.WriteLine("Verification {3}\n\tVerification returned: {0} \n\tNumber of messages left to send: {1}\n\tReset UNIX timestamp: {2}",
+                    verificationResult.ResultCode,
+                    verificationResult.RemainingMessageCount.ToString(),
+                    verificationResult.TimeStamp,
+                    verificationResult.ResultCode == "200" ? "OK" : "NOT OK");
+            }
+            else {
+                if (string.IsNullOrEmpty(arguments.Event))
+                {
                     System.Console.WriteLine("Event is required");
                     return;
                 }
-  
-                if (string.IsNullOrEmpty(arguments.Application)) {
+
+                if (string.IsNullOrEmpty(arguments.Application))
+                {
                     System.Console.WriteLine("Application is required");
                     return;
                 }
 
                 var notification = new Notification
-                                       {
-                                           Application = arguments.Application,
-                                           Description = arguments.Description,
-                                           Event = arguments.Event,
-                                           Url = arguments.Url
-                                       };
+                {
+                    Application = arguments.Application,
+                    Description = arguments.Description,
+                    Event = arguments.Event,
+                    Url = arguments.Url
+                };
 
 
-                switch (arguments.Priority.ToLower()) {
+                switch (arguments.Priority.ToLower())
+                {
                     case "verylow":
                         notification.Priority = NotificationPriority.VeryLow;
                         break;
@@ -79,26 +107,14 @@ namespace Prowlin.Console
                         break;
                 }
 
-                foreach (string s in arguments.Key.Split(new[] {',', ';'})) {
+                foreach (string s in arguments.Key.Split(new[] { ',', ';' }))
+                {
                     notification.AddApiKey(s);
                 }
-
 
                 int remaingMessages = prowlClient.SendNotification(notification);
 
                 System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages);
-            }
-            else {
-                IVerification v = new Verification();
-                v.ApiKey = arguments.Key;
-                v.ProviderKey = arguments.ProviderKey;
-                System.Console.WriteLine("Sending verification");
-                VerificationResult verificationResult = prowlClient.SendVerification(v);
-                System.Console.WriteLine("Verification {3}\nVerification returned: {0}, no of messages left to send: {1}, reset time: {2}", 
-                    verificationResult.ResultCode,
-                    verificationResult.RemainingMessageCount.ToString(),
-                    verificationResult.TimeStamp,
-                    verificationResult.ResultCode == "200"?"OK":"NOT OK");
             }
         }
 
@@ -121,7 +137,9 @@ namespace Prowlin.Console
             System.Console.WriteLine("\t-h, -help\t\tHELP\t\tThis screen");
             System.Console.WriteLine("\t-v, -verify\t\tVERIFIY\t\tVerification of key used in combination with -k (APIKEY) ");
             System.Console.WriteLine("\t\t\t\t\t\tand (optional) -p (PROVIDER KEY)");
-            System.Console.WriteLine("" );
+            System.Console.WriteLine("\t-t, -token\t\tRETRIVE/TOKEN\tGet a registration token for use in retrieve/apikey and \n\t\t\t\t\t\tthe associated URL for the user to approve the request. Use together with -providerkey");
+            System.Console.WriteLine("\t-pro, -providerkey\tPROVIDER KEY\tProviderKey  to use in conjunction with -t (retrieve/token)");
+            System.Console.WriteLine("");
             System.Console.WriteLine("" );
         }
     }

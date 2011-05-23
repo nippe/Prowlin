@@ -59,5 +59,11 @@ namespace Prowlin
             parameters.Add("application", verification.ProviderKey);
             return parameters;
         }
+
+        public Dictionary<string, string> BuildDictionaryForRetreiveToken(RetrieveToken retrieveToken) {
+            Dictionary<string,string > parameters = new Dictionary<string, string>(1);
+            parameters.Add("providerkey", retrieveToken.ProviderKey);
+            return parameters;
+        }
     }
 }

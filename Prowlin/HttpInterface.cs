@@ -107,9 +107,61 @@ namespace Prowlin
                        };
         }
 
+        public RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken) {
+            RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
 
+            string http = GetHttpMethod(Method.Verify);
 
-       
+            Dictionary<string, string> parameters = requestBuilderHelper.BuildDictionaryForRetreiveToken(retrieveToken);
+
+            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.GetToken, parameters);
+            WebResponse response = default(WebResponse);
+
+            try
+            {
+                response = httpWebRequest.GetResponse();
+            }
+            catch (TimeoutException e)
+            {
+                throw new TimeoutException("Timeout delivery uncertain");
+            }
+
+            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
+            int remaingNoOfMessages = 0;
+            string timestamp = string.Empty;
+            string returnCode = string.Empty;
+            string errMsg = string.Empty;
+            string token = string.Empty;
+            string url = string.Empty;
+
+            if (resultDocument != null)
+            {
+                if (resultDocument.Descendants("error").Count() > 0)
+                {
+                    errMsg = resultDocument.Descendants("error").ElementAt(0).Attribute("code").Value;
+                }
+
+                int.TryParse(resultDocument.Descendants("success").ElementAt(0).Attribute("remaining").Value,
+                             out remaingNoOfMessages);
+                timestamp = resultDocument.Descendants("success").ElementAt(0).Attribute("resetdate").Value;
+                returnCode = resultDocument.Descendants("success").ElementAt(0).Attribute("code").Value;
+                token = resultDocument.Descendants("retrieve").ElementAt(0).Attribute("token").Value;
+                url = resultDocument.Descendants("retrieve").ElementAt(0).Attribute("url").Value;
+
+            }
+
+            return new RetrieveTokenResult()
+            {
+                ResultCode = returnCode,
+                RemainingMessageCount = remaingNoOfMessages,
+                TimeStamp = timestamp,
+                Token = token,
+                Url = url
+            };
+        
+        
+        }
+
 
 
         public HttpWebRequest BuildRequest(string baseUrl, string method, Dictionary<string, string> parameters) {

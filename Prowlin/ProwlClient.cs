@@ -52,5 +52,23 @@ namespace Prowlin
 
             return _httpInterface.SendVerification(verification);
         }
+
+        public RetrieveTokenResult RetreiveToken(RetrieveToken retrieveToken) {
+            var context = new ValidationContext(retrieveToken, null, null);
+            var results = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(retrieveToken, context, results, true);
+
+            if (valid == false)
+            {
+                foreach (var validationResult in results)
+                {
+                    throw new ArgumentException(validationResult.ErrorMessage);
+                }
+            }
+
+            return _httpInterface.RetrieveToken(retrieveToken);
+
+
+        }
     }
 }

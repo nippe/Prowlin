@@ -25,6 +25,10 @@ namespace Prowlin.UnitTests.Fakes
             throw new NotImplementedException();
         }
 
+        public RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken) {
+            throw new NotImplementedException();
+        }
+
 
         public bool SendNotificationsCalled {
             get { return _sendNotificationsCalled; }
