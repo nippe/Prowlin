@@ -25,12 +25,24 @@ namespace Prowlin.UnitTests
             Assert.Equal("POST", httpWebRequest.Method);
         }
 
+
         [Fact]
         public void reqeust_method_should_be_get_for_verify()
         {
             HttpInterface httpInterface = new HttpInterface();
             
             HttpWebRequest httpWebRequest = httpInterface.BuildRequest("http://www.nnihlen.com/blog/", Method.Verify, null);
+
+            Assert.Equal("GET", httpWebRequest.Method);
+        }
+
+
+        [Fact]
+        public void retrieveToken_method_should_be_get_for_verify()
+        {
+            HttpInterface httpInterface = new HttpInterface();
+            
+            HttpWebRequest httpWebRequest = httpInterface.BuildRequest("http://www.nnihlen.com/blog/", Method.GetToken, null);
 
             Assert.Equal("GET", httpWebRequest.Method);
         }

@@ -96,8 +96,7 @@ namespace Prowlin.UnitTests
         }
 
         [Fact]
-        public void reqeust_uri_should_build_correctly_for_add_without_trailing_slash()
-        {
+        public void reqeust_uri_should_build_correctly_for_add_without_trailing_slash() {
             Dictionary<string, string> d = new Dictionary<string, string>();
 
             RequestBuilderHelper helper = new RequestBuilderHelper();
@@ -108,22 +107,41 @@ namespace Prowlin.UnitTests
 
 
         [Fact]
-        public void reqeust_uri_should_build_correctly_for_add_with_parameters_trailing_slash()
-        {
+        public void reqeust_uri_should_build_correctly_for_add_with_parameters_trailing_slash() {
             Dictionary<string, string> d = new Dictionary<string, string>();
             d.Add("url", "foo");
             d.Add("event", "yes");
 
             RequestBuilderHelper helper = new RequestBuilderHelper();
-
             string url = helper.BuildRequestUrl("http://www.nnihlen.com/blog/", Method.Add, d);
-
-
+            
             Assert.Equal("http://www.nnihlen.com/blog/add?url=foo&event=yes", url);
         }
 
+        [Fact]
+        public void BuildDictionaryForVerification_should_build_correct_dictionary() {
+            Verification v = new Verification()
+                                 {
+                                     ApiKey = "1234567890123456789012345678901234567890",
+                                     ProviderKey = "9012345678901234567890123456789012345678"
+                                 };
 
+            Dictionary<string, string> resultDict = new RequestBuilderHelper().BuildDictionaryForVerification(v);
 
+            Assert.Equal(v.ApiKey, resultDict["apikey"]);
+            Assert.Equal(v.ProviderKey, resultDict["providerkey"]);
+
+        }
+
+        [Fact]
+        public void BuildDictionaryForRetreiveToken_should_build_correct_dictionary()
+        {
+            RetrieveToken rt = new RetrieveToken() { ProviderKey = "9012345678901234567890123456789012345678" };
+
+            Dictionary<string, string> resultDict = new RequestBuilderHelper().BuildDictionaryForRetreiveToken(rt);
+
+            Assert.Equal(rt.ProviderKey, resultDict["providerkey"]);
+            }
 
     }
 }

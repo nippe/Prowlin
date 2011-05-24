@@ -110,8 +110,6 @@ namespace Prowlin
         public RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken) {
             RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
 
-            string http = GetHttpMethod(Method.Verify);
-
             Dictionary<string, string> parameters = requestBuilderHelper.BuildDictionaryForRetreiveToken(retrieveToken);
 
             HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.GetToken, parameters);
@@ -162,20 +160,38 @@ namespace Prowlin
         
         }
 
+        public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
+            RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
+            Dictionary<string, string> parameters = requestBuilderHelper.BuildDictionaryForRetreiveApiKey(retrieveApikey);
+            WebResponse response = default(WebResponse);
+
+            HttpWebRequest request = BuildRequest(BASE_URL, Method.GetApiKey, parameters);
+
+            try {
+                response = request.GetResponse();
+            }
+            catch (TimeoutException) {
+                throw new TimeoutException("Timeout delivery uncertain");
+            }
+
+            XDocument resultDoc = XDocument.Load(response.GetResponseStream());
+
+            string newKey = resultDoc.Descendants("retrieve").First().Attribute("apikey").Value;
+
+            return new RetrieveApikeyResult(){ApiKey = newKey};
+
+        }
+
 
 
         public HttpWebRequest BuildRequest(string baseUrl, string method, Dictionary<string, string> parameters) {
 
             RequestBuilderHelper requestBuilderHelper = new RequestBuilderHelper();
-            string httpVerb;
-
-            httpVerb = GetHttpMethod(method);
-
 
             Uri uri = new Uri(requestBuilderHelper.BuildRequestUrl(BASE_URL, method, parameters));
 
             HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
-            request.Method = httpVerb;
+            request.Method = GetHttpMethod(method);
             //request.Timeout = 10*1000; //10 seconds
             request.ContentType = "application/x-www-form-urlencoded";
 
