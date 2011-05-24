@@ -271,8 +271,8 @@ namespace Prowlin.UnitTests
 
             RetrieveApikey retrieveApikey = new RetrieveApikey()
                                                 {
-                                                    ProviderKey = "12345678901234567890123456789012345678901290",
-                                                    Token = "12345678901234567890123456789012345678901290"
+                                                    ProviderKey = "1234567890123456789012345678901234567890",
+                                                    Token = "1234567890123456789012345678901234567890"
                                                 };
             client.RetrieveApikey(retrieveApikey);
         }

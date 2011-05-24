@@ -10,6 +10,7 @@ namespace Prowlin.UnitTests.Fakes
         private bool _sendNotificationsCalled = false;
         private bool _sendVerificationCalled = false;
         private bool _retrieveTokenCalled = false;
+        private bool _retrieveApikeyCalled;
 
         public int SendNotification() {
             _sendNotificationsCalled = true;
@@ -46,7 +47,8 @@ namespace Prowlin.UnitTests.Fakes
         }
 
         public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
-            throw new NotImplementedException();
+            _retrieveApikeyCalled = true;
+            return new RetrieveApikeyResult() { ApiKey = "0987654321098765432109876543210987654321" };
         }
 
 
@@ -60,6 +62,10 @@ namespace Prowlin.UnitTests.Fakes
 
         public bool RetrieveTokenCalled {
             get { return _retrieveTokenCalled; }
+        }
+
+        public bool RetrieveApikeyCalled {
+            get { return _retrieveApikeyCalled; }
         }
     }
 }
