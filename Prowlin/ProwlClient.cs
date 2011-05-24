@@ -19,70 +19,36 @@ namespace Prowlin
         }
 
         public int SendNotification(INotification notification) {
-            //Validate Object
-
-            var context = new ValidationContext(notification, null, null);
-            var results = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(notification, context, results, true);
-            
-            if(valid == false) {
-                foreach (var validationResult in results) {
-                    throw new ArgumentException(validationResult.ErrorMessage);
-                }
-            }
-
-
-            //Send Prowl Notification
+            ValidateObject(notification);
             return _httpInterface.SendNotification(notification);
-
-            //Return no of messages left
-            //_httpInterface.SendNotification();
         }
 
         public VerificationResult SendVerification(IVerification verification) {
-            var context = new ValidationContext(verification, null, null);
-            var results = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(verification, context, results, true);
-
-            if (valid == false) {
-                foreach (var validationResult in results) {
-                    throw new ArgumentException(validationResult.ErrorMessage);
-                }
-            }
-
+            ValidateObject(verification);
             return _httpInterface.SendVerification(verification);
         }
 
         public RetrieveTokenResult RetreiveToken(RetrieveToken retrieveToken) {
-            var context = new ValidationContext(retrieveToken, null, null);
-            var results = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(retrieveToken, context, results, true);
-
-            if (valid == false)
-            {
-                foreach (var validationResult in results)
-                {
-                    throw new ArgumentException(validationResult.ErrorMessage);
-                }
-            }
-
+            ValidateObject(retrieveToken);
             return _httpInterface.RetrieveToken(retrieveToken);
-
-
         }
 
         public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
-            var context = new ValidationContext(retrieveApikey, null, null);
+            ValidateObject(retrieveApikey);
+
+            return _httpInterface.RetrieveApikey(retrieveApikey);
+        }
+
+        private void ValidateObject(object objectToValidate) {
+            var context = new ValidationContext(objectToValidate, null, null);
             var results = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(retrieveApikey, context, results, true);
+            bool valid = Validator.TryValidateObject(objectToValidate, context, results, true);
 
             if (valid == false) {
                 foreach (var validationResult in results) {
                     throw new ArgumentException(validationResult.ErrorMessage);
                 }
             }
-
-            return _httpInterface.RetrieveApikey(retrieveApikey);
         }
     }
 }

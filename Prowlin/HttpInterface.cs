@@ -22,7 +22,7 @@ namespace Prowlin
     public class HttpInterface : IHttpInterface
     {
         private readonly string BASE_URL = " https://api.prowlapp.com/publicapi/";
-        //private readonly string BASE_URL = " https://prowl.weks.net/publicapi/";
+
 
         public int SendNotification(INotification notification) {
         

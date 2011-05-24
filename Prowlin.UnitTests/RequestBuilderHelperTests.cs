@@ -137,11 +137,19 @@ namespace Prowlin.UnitTests
         public void BuildDictionaryForRetreiveToken_should_build_correct_dictionary()
         {
             RetrieveToken rt = new RetrieveToken() { ProviderKey = "9012345678901234567890123456789012345678" };
-
             Dictionary<string, string> resultDict = new RequestBuilderHelper().BuildDictionaryForRetreiveToken(rt);
-
             Assert.Equal(rt.ProviderKey, resultDict["providerkey"]);
-            }
+        }
+
+        [Fact]
+        public void BuildDictionaryForRetreiveApiKey_should_build_correct_dictionary()
+        {
+            RetrieveApikey retrieveApikey = new RetrieveApikey(){ProviderKey = "9012345678901234567890123456789012345678", Token = "1234567890123456789012345678901234567890"};
+            Dictionary<string, string> resultDict = new RequestBuilderHelper().BuildDictionaryForRetreiveApiKey(retrieveApikey);
+            Assert.Equal(retrieveApikey.ProviderKey, resultDict["providerkey"]);
+            Assert.Equal(retrieveApikey.Token, resultDict["token"]);
+        }
 
     }
 }
+
