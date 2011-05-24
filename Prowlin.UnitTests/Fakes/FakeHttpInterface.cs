@@ -9,6 +9,7 @@ namespace Prowlin.UnitTests.Fakes
     {
         private bool _sendNotificationsCalled = false;
         private bool _sendVerificationCalled = false;
+        private bool _retrieveTokenCalled = false;
 
         public int SendNotification() {
             _sendNotificationsCalled = true;
@@ -22,10 +23,29 @@ namespace Prowlin.UnitTests.Fakes
         }
 
         public VerificationResult SendVerification(IVerification verification) {
-            throw new NotImplementedException();
+            _sendVerificationCalled = true;
+            return new VerificationResult()
+                       {
+                           ErrorMessage = string.Empty,
+                           RemainingMessageCount = 999,
+                           ResultCode = "200",
+                           TimeStamp = "" //TODO: Get valid timestamp format
+                       };
         }
 
         public RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken) {
+            _retrieveTokenCalled = true;
+            return new RetrieveTokenResult()
+                       {
+                           RemainingMessageCount = 999,
+                           ResultCode = "200",
+                           TimeStamp = "",
+                           Token = "ASDFGASDFGASDFGASDFGASDFGASDFGASDFGASDFG",
+                           Url = "http://www.prowlapp.com/"
+                       };
+        }
+
+        public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
             throw new NotImplementedException();
         }
 
@@ -36,6 +56,10 @@ namespace Prowlin.UnitTests.Fakes
 
         public bool SendVerificationCalled {
             get { return _sendVerificationCalled; }
+        }
+
+        public bool RetrieveTokenCalled {
+            get { return _retrieveTokenCalled; }
         }
     }
 }

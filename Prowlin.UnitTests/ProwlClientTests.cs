@@ -194,5 +194,103 @@ namespace Prowlin.UnitTests
             Assert.Throws(typeof (ArgumentException),
                           delegate { prowlClient.SendVerification(verification); });
         }
+
+        [Fact]
+        public void RetrieveToken_should_call_RetriveToken_on_HttpInterface() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var retriveTokenMessage = new RetrieveToken()
+                                          {
+                                              ProviderKey = "1234567890123456789012345678901234567890"
+                                          };
+
+            prowlClient.RetreiveToken(retriveTokenMessage);
+
+            Assert.True(fakeHttpInterface.RetrieveTokenCalled);
+        }
+
+        [Fact]
+        public void RetrieveToken_WithShortProviderKey_ShouldTrhowArgumentException() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var retriveTokenMessage = new RetrieveToken()
+            {
+                ProviderKey = "12345678901234567890123456789012345678"
+            };
+
+            Assert.Throws(typeof(ArgumentException), delegate
+                                                         {
+                                                              prowlClient.RetreiveToken(retriveTokenMessage);
+                                                         });
+           
+            Assert.False(fakeHttpInterface.RetrieveTokenCalled);
+        } 
+        
+        
+        [Fact]
+        public void RetrieveToken_WithLongProviderKey_ShouldTrhowArgumentException() {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var retriveTokenMessage = new RetrieveToken()
+            {
+                ProviderKey = "12345678901234567890123456789012345678901290"
+            };
+
+            Assert.Throws(typeof(ArgumentException), delegate
+                                                         {
+                                                              prowlClient.RetreiveToken(retriveTokenMessage);
+                                                         });
+           
+            Assert.False(fakeHttpInterface.RetrieveTokenCalled);
+        }
+
+
+        [Fact]
+        public void SendVerification_should_call_SendVerification_on_HttpInterface()
+        {
+            var fakeHttpInterface = new FakeHttpInterface();
+            var prowlClient = new ProwlClient(fakeHttpInterface);
+
+            var verification = new Verification
+            {
+                ApiKey = "1234567890123456789012345678901234567890",
+                ProviderKey = "ewrwe"
+            };
+
+            prowlClient.SendVerification(verification);
+            Assert.True(fakeHttpInterface.SendVerificationCalled);
+        }
+
+        [Fact]
+        public void RetrieveApiKey_should_call_RetrieveApikey_on_HttpInterface() {
+            FakeHttpInterface fakeHttpInterface = new FakeHttpInterface();
+            ProwlClient client = new ProwlClient(fakeHttpInterface);
+
+            RetrieveApikey retrieveApikey = new RetrieveApikey()
+                                                {
+                                                    ProviderKey = "12345678901234567890123456789012345678901290",
+                                                    Token = "12345678901234567890123456789012345678901290"
+                                                };
+            client.RetrieveApikey(retrieveApikey);
+        }
+
+        [Fact]
+        public void RetrieveApiKey_should_return_correct_fake_data()
+        {
+            FakeHttpInterface fakeHttpInterface = new FakeHttpInterface();
+            ProwlClient client = new ProwlClient(fakeHttpInterface);
+
+            RetrieveApikey retrieveApikey = new RetrieveApikey()
+            {
+                ProviderKey = "1234567890123456789012345678901234567890",
+                Token =       "1234567890123456789012345678901234567890"
+            };
+            RetrieveApikeyResult retrieveApikeyResult = client.RetrieveApikey(retrieveApikey);
+
+            Assert.Equal("0987654321098765432109876543210987654321", retrieveApikeyResult.ApiKey);
+        }
     }
 }

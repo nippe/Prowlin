@@ -70,5 +70,19 @@ namespace Prowlin
 
 
         }
+
+        public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
+            var context = new ValidationContext(retrieveApikey, null, null);
+            var results = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(retrieveApikey, context, results, true);
+
+            if (valid == false) {
+                foreach (var validationResult in results) {
+                    throw new ArgumentException(validationResult.ErrorMessage);
+                }
+            }
+
+            return _httpInterface.RetrieveApikey(retrieveApikey);
+        }
     }
 }

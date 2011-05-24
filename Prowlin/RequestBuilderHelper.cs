@@ -56,13 +56,20 @@ namespace Prowlin
         public Dictionary<string, string> BuildDictionaryForVerification(IVerification verification) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("apikey", verification.ApiKey);
-            parameters.Add("application", verification.ProviderKey);
+            parameters.Add("providerkey", verification.ProviderKey);
             return parameters;
         }
 
         public Dictionary<string, string> BuildDictionaryForRetreiveToken(RetrieveToken retrieveToken) {
             Dictionary<string,string > parameters = new Dictionary<string, string>(1);
             parameters.Add("providerkey", retrieveToken.ProviderKey);
+            return parameters;
+        }
+
+        public Dictionary<string, string> BuildDictionaryForRetreiveApiKey(RetrieveApikey retrieveApikey) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>(1);
+            parameters.Add("providerkey", retrieveApikey.ProviderKey);
+            parameters.Add("token", retrieveApikey.Token);
             return parameters;
         }
     }
