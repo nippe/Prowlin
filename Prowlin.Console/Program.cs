@@ -16,7 +16,9 @@ namespace Prowlin.Console
         public bool     Help            = false;
         public bool     Verify          = false;
         public string   ProviderKey     = string.Empty;
-        public bool     Token           = false;
+        public bool     RetrieveToken   = false;
+        public bool     NewKey          = false;
+        public string   Token           = string.Empty;
     }
 
     internal class Program
@@ -36,7 +38,7 @@ namespace Prowlin.Console
             
             var prowlClient = new ProwlClient();
             
-            if (arguments.Token)
+            if (arguments.RetrieveToken)
             {
                 RetrieveToken retrieveToken = new RetrieveToken();
                 retrieveToken.ProviderKey = arguments.ProviderKey;
@@ -46,6 +48,20 @@ namespace Prowlin.Console
                     result.Token,
                     result.Url);
 
+                return;
+            }
+
+            if (arguments.NewKey) {
+                if(string.IsNullOrEmpty(arguments.Token) || string.IsNullOrEmpty(arguments.ProviderKey)) {
+                    System.Console.WriteLine("ProviderKey and Token required for this operation.");
+                    return;
+                }
+                RetrieveApikey retrieveApikey = new RetrieveApikey();
+                retrieveApikey.Token = arguments.Token;
+                retrieveApikey.ProviderKey = arguments.ProviderKey;
+
+                RetrieveApikeyResult retrieveApikeyResult = prowlClient.RetrieveApikey(retrieveApikey);
+                System.Console.WriteLine("New APIKEY: {0}");
                 return;
             }
 
@@ -137,8 +153,9 @@ namespace Prowlin.Console
             System.Console.WriteLine("\t-h, -help\t\tHELP\t\tThis screen");
             System.Console.WriteLine("\t-v, -verify\t\tVERIFIY\t\tVerification of key used in combination with -k (APIKEY) ");
             System.Console.WriteLine("\t\t\t\t\t\tand (optional) -p (PROVIDER KEY)");
-            System.Console.WriteLine("\t-t, -token\t\tRETRIVE/TOKEN\tGet a registration token for use in retrieve/apikey and \n\t\t\t\t\t\tthe associated URL for the user to approve the request. Use together with -providerkey");
-            System.Console.WriteLine("\t-pro, -providerkey\tPROVIDER KEY\tProviderKey  to use in conjunction with -t (retrieve/token)");
+            System.Console.WriteLine("\t-r, -retrievetoken\tRETRIVE/TOKEN\tGet a registration token for use in retrieve/apikey and \n\t\t\t\t\t\tthe associated URL for the user to approve the request. Use together with -providerkey");
+            System.Console.WriteLine("\t-pro, -providerkey\tPROVIDER KEY\tProviderKey  to use in conjunction with -r (retrieve/token)");
+            System.Console.WriteLine("\t-n, -newkey\t\tGET APIKEY\tGet new api key  to use in conjunction with -t (token) and\n\t\t\t\t\t\t-pro (providerkey)");
             System.Console.WriteLine("");
             System.Console.WriteLine("" );
         }

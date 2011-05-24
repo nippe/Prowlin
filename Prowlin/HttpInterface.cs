@@ -15,7 +15,7 @@ namespace Prowlin
       public static string Add = "add";
       public static string Verify   = "verify";
       public static string GetToken = "retrieve/token";
-      public static string GetApiKey = "addretrieve/apikey";
+      public static string GetApiKey = "retrieve/apikey";
 
   }
 
