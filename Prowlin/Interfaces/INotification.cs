@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Prowlin
+namespace Prowlin.Interfaces
 {
     public interface INotification
     {

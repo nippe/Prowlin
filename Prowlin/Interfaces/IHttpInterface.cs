@@ -1,8 +1,8 @@
-namespace Prowlin
+﻿namespace Prowlin.Interfaces
 {
     public interface IHttpInterface
     {
-        int SendNotification(INotification notification);
+        NotificationResult SendNotification(INotification notification);
         VerificationResult SendVerification(IVerification verification);
         RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken);
         RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey);

@@ -1,5 +1,6 @@
 ﻿using System;
 using Args;
+using Prowlin.Interfaces;
 
 
 namespace Prowlin.Console
@@ -128,9 +129,9 @@ namespace Prowlin.Console
                     notification.AddApiKey(s);
                 }
 
-                int remaingMessages = prowlClient.SendNotification(notification);
+                NotificationResult notificationResult= prowlClient.SendNotification(notification);
 
-                System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages);
+                System.Console.WriteLine("Remaing number of messages: {0}", notificationResult.RemainingMessageCount.ToString());
             }
         }
 

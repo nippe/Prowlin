@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Prowlin.Interfaces;
 
 namespace Prowlin.UnitTests.Fakes
 {
@@ -18,9 +19,9 @@ namespace Prowlin.UnitTests.Fakes
             return 900;
         }
 
-        public int SendNotification(INotification notification) {
+        public NotificationResult SendNotification(INotification notification) {
             _sendNotificationsCalled = true;
-            return 900;
+            return new NotificationResult();
         }
 
         public VerificationResult SendVerification(IVerification verification) {

@@ -8,12 +8,9 @@
 	<retrieve token="TOKEN" url="URL" />
 </prowl>
      */
-    public class RetrieveTokenResult
+    public class RetrieveTokenResult : ResultBase
     {
-        public string ResultCode { get; set; }
-        public int RemainingMessageCount { get; set; }
-        public string TimeStamp { get; set; }
-        public string Token { get; set; }
+       public string Token { get; set; }
         public string Url { get; set; }
     }
 }

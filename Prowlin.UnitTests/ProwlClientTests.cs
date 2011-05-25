@@ -1,4 +1,5 @@
 ﻿using System;
+using Prowlin.Interfaces;
 using Prowlin.UnitTests.Fakes;
 using Xunit;
 
@@ -10,6 +11,11 @@ namespace Prowlin.UnitTests
         public void ProwlClient_should_take_IHttpNotfication_in_constructor() {
             IHttpInterface httpInterface = new FakeHttpInterface();
             var prowlClient = new ProwlClient(httpInterface);
+        }
+
+        [Fact]
+        public void ProwlClient_default_constructor_should_work_fine() {
+            Assert.NotNull(new ProwlClient());
         }
 
 

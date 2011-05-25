@@ -42,22 +42,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\Notification.cs" />
+    <Compile Include="DTOs\NotificationResult.cs" />
+    <Compile Include="DTOs\ResultBase.cs" />
+    <Compile Include="DTOs\RetrieveApikey.cs" />
+    <Compile Include="DTOs\RetrieveApikeyResult.cs" />
+    <Compile Include="DTOs\RetrieveToken.cs" />
+    <Compile Include="DTOs\RetrieveTokenResult.cs" />
+    <Compile Include="DTOs\Verification.cs" />
+    <Compile Include="DTOs\VerificationResult.cs" />
     <Compile Include="HttpInterface.cs" />
-    <Compile Include="IHttpInterface.cs" />
-    <Compile Include="INotification.cs" />
-    <Compile Include="IVerification.cs" />
-    <Compile Include="Notification.cs" />
+    <Compile Include="Interfaces\IHttpInterface.cs" />
+    <Compile Include="Interfaces\INotification.cs" />
+    <Compile Include="Interfaces\IVerification.cs" />
     <Compile Include="NotificationPriority.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProwlClient.cs" />
     <Compile Include="RequestBuilderHelper.cs" />
-    <Compile Include="RetrieveApikey.cs" />
-    <Compile Include="RetrieveApikeyResult.cs" />
-    <Compile Include="RetrieveToken.cs" />
-    <Compile Include="RetrieveTokenResult.cs" />
-    <Compile Include="Verification.cs" />
-    <Compile Include="VerificationResult.cs" />
+    <Compile Include="ResultParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

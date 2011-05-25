@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Prowlin.Interfaces;
 
 namespace Prowlin
 {
@@ -18,7 +19,7 @@ namespace Prowlin
             _httpInterface = httpInterface;
         }
 
-        public int SendNotification(INotification notification) {
+        public NotificationResult SendNotification(INotification notification) {
             ValidateObject(notification);
             return _httpInterface.SendNotification(notification);
         }
