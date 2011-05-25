@@ -30,11 +30,10 @@ Usage
 	  notification.AddApiKey("<your-very-secret-apikey-goes-here>");
 
 	  ProwlClient prowlClient = new ProwlClient();
-	  int remaingMessages = prowlClient.SendNotification(notification);
+	  NotificationResult notificationResult = prowlClient.SendNotification(notification);
+
+	  System.Console.WriteLine("Remaing number of messages: {0}", notificationResult.RemainingMessageCount.ToString());
 	
-	  System.Console.WriteLine("Remaing number of messages: {0}", remaingMessages.ToString());
-
-
 
 ### Command Line
 
@@ -48,6 +47,13 @@ Usage
         -d, -description        DESCRIPTION     Description
         -p, -priority           PRIORITY        Priority - VERYLOW, MODERATE, NORMAL(default), HIGH, EMERGENCY
         -u, -url                URL             Url
+		-v, -verify             VERIFIY         Verification of key used in combination with -k (APIKEY)
+                                                and (optional) -p (PROVIDER KEY)
+        -r, -retrievetoken      RETRIVE/TOKEN   Get a registration token for use in retrieve/apikey and
+                                                the associated URL for the user to approve the request. Use together with -providerkey
+        -pro, -providerkey      PROVIDER KEY    ProviderKey  to use in conjunction with -r (retrieve/token)
+        -n, -newkey             GET APIKEY      Get new api key  to use in conjunction with -t (token) and
+                                                -pro (providerkey)
         -h, -help               HELP            This screen
 
 
