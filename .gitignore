@@ -17,3 +17,4 @@ aspnet_client
 httpd.parse.errors
 .svn
 build
+*crunchsolution*
