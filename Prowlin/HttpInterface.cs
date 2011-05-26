@@ -29,43 +29,18 @@ namespace Prowlin
 
             Dictionary<string, string> parameters = _requestBuilderHelper.BuildDictionaryForNotificataion(notification);
 
-            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.Add, parameters);
-
-            WebResponse response = default(WebResponse);
-
-            try {
-                response = httpWebRequest.GetResponse();
-            }
-            catch (TimeoutException e) {
-                throw new TimeoutException("Timeout delivery uncertain");
-            }
-            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
             NotificationResult notificationResult = new NotificationResult();
+            XDocument resultDocument = GetResultDocument(parameters, Method.Add, notificationResult);
 
-            ResultParser.ParseResultBase(resultDocument, notificationResult);
             return notificationResult;
         }
 
-        
 
         public VerificationResult SendVerification(IVerification verification) {
             Dictionary<string, string> parameters = _requestBuilderHelper.BuildDictionaryForVerification(verification);
 
-            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.Verify, parameters);
-
-            WebResponse response = default(WebResponse);
-
-            try {
-                response = httpWebRequest.GetResponse();
-            }
-            catch (TimeoutException e) {
-                throw new TimeoutException("Timeout delivery uncertain");
-            }
-
-            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
             VerificationResult verificationResult = new VerificationResult();
-            ResultParser.ParseResultBase(resultDocument, verificationResult);
-
+            XDocument resultDocument = GetResultDocument(parameters, Method.Verify, verificationResult);
             return verificationResult;
         }
 
@@ -73,21 +48,8 @@ namespace Prowlin
         public RetrieveTokenResult RetrieveToken(RetrieveToken retrieveToken) {
             Dictionary<string, string> parameters = _requestBuilderHelper.BuildDictionaryForRetreiveToken(retrieveToken);
 
-            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, Method.GetToken, parameters);
-            WebResponse response = default(WebResponse);
-
-            try
-            {
-                response = httpWebRequest.GetResponse();
-            }
-            catch (TimeoutException e)
-            {
-                throw new TimeoutException("Timeout delivery uncertain");
-            }
-
             RetrieveTokenResult retrieveTokenResult = new RetrieveTokenResult();
-            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
-            ResultParser.ParseResultBase(resultDocument, retrieveTokenResult);
+            XDocument resultDocument = GetResultDocument(parameters, Method.GetToken, retrieveTokenResult);
             ResultParser.ParseTokenResult(resultDocument, retrieveTokenResult);
 
             return retrieveTokenResult;
@@ -96,26 +58,31 @@ namespace Prowlin
 
         public RetrieveApikeyResult RetrieveApikey(RetrieveApikey retrieveApikey) {
             Dictionary<string, string> parameters = _requestBuilderHelper.BuildDictionaryForRetreiveApiKey(retrieveApikey);
-            WebResponse response = default(WebResponse);
 
-            HttpWebRequest request = BuildRequest(BASE_URL, Method.GetApiKey, parameters);
-
-            try {
-                response = request.GetResponse();
-            }
-            catch (TimeoutException) {
-                throw new TimeoutException("Timeout delivery uncertain");
-            }
-
-            XDocument resultDoc = XDocument.Load(response.GetResponseStream());
             RetrieveApikeyResult retrieveApikeyResult = new RetrieveApikeyResult();
-            ResultParser.ParseResultBase(resultDoc, retrieveApikeyResult);
+            XDocument resultDoc = GetResultDocument(parameters, Method.GetApiKey, retrieveApikeyResult);
             ResultParser.ParseApikeyResult(resultDoc, retrieveApikeyResult);
 
             return retrieveApikeyResult;
         }
 
 
+        private XDocument GetResultDocument(Dictionary<string, string> parameters, string method, ResultBase resultBase) {
+            HttpWebRequest httpWebRequest = BuildRequest(BASE_URL, method, parameters);
+
+            WebResponse response = default(WebResponse);
+
+            try {
+                response = httpWebRequest.GetResponse();
+            }
+            catch (TimeoutException e) {
+                throw new TimeoutException("Timeout delivery uncertain");
+            }
+            XDocument resultDocument = XDocument.Load(response.GetResponseStream());
+            ResultParser.ParseResultBase(resultDocument, resultBase);
+
+            return resultDocument;
+        }
 
         public HttpWebRequest BuildRequest(string baseUrl, string method, Dictionary<string, string> parameters) {
 
