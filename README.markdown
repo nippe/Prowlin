@@ -37,8 +37,8 @@ Usage
 
 ### Command Line
 
-      > Prowlin -k one_apikey -e "event X" -a "Application Y"
-      > Prowlin -k apikey_one,apikey_two,... -e "event X" -a "Application Y"
+      > ProwlinCmd -k one_apikey -e "event X" -a "Application Y"
+      > ProwlinCmd -k apikey_one,apikey_two,... -e "event X" -a "Application Y"
 
       Options:
         -k, -key                APIKEY(s)       Prowl API key, one or many separated by commas
