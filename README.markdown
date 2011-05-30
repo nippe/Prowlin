@@ -12,7 +12,7 @@ Prowlin consists of two parts.
 Installation
 ------------
 
-Get the binaries from her or get the code and build it in Visual Studio 2010. I use .Net Framework Version 4.
+Get the binaries [here](https://github.com/nippe/Prowlin/downloads) or get the code and build it in Visual Studio 2010. I use .Net Framework Version 4.
 
 Usage
 -----
