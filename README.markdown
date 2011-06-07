@@ -16,6 +16,7 @@ Get the binaries [here](https://github.com/nippe/Prowlin/downloads) or get the c
 
 Usage
 -----
+This blog post shows a sample on how to use Prowlin: http://www.nnihlen.com/blog/archive/2011/06/02/notifications-to-iphone-ipad-using_prowl-and-prowlin-in-net.aspx
 ### Code
 
 
