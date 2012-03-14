@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Prowlin</id>
+    <version>$version$</version>
+    <title>Prowlin</title>
+    <authors>Niklas Nihlén</authors>
+    <owners>Ole Lynge Soerensen</owners>
+    <projectUrl>https://github.com/nippe/Prowlin</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A .Net library to send notifications to iPhones using Prowl.</description>
+    <copyright>Copyright 2012</copyright>
+  </metadata>
+</package>

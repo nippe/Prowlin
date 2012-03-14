@@ -18,3 +18,4 @@ httpd.parse.errors
 .svn
 build
 *crunchsolution*
+*.nupkg
