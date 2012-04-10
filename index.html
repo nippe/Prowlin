@@ -31,32 +31,83 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>Info about Prowlin</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>
+  The purpose of Prowlin is to provide a .Net library and command line tool for sending notifictions to iPhone's/iPad's using the Prowl service and app, check it out at http://www.prowlapp.com.
+</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>
+  Prowlin consists of two parts. 
+  <ol>
+    <li>A .Net library (dll) that can be used from any .Net code</li>
+    <li>A command line client that uses the library.</li>
+  </ol>
+</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>Installation</h3>
+<p>
+Get the binaries [here](https://github.com/nippe/Prowlin/downloads) or get the code and build it in Visual Studio 2010. I use .Net Framework Version 4.
+</p>
 
-<h3>Designer Templates</h3>
+<h3>Usage</h3>
+<p>
+This blog post shows a sample on how to use Prowlin: http://www.nnihlen.com/blog/archive/2011/06/02/notifications-to-iphone-ipad-using_prowl-and-prowlin-in-net.aspx
+</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h4>Code</h4>
+<pre>
+  <code>
+      INotification notification = new Prowlin.Notification()
+                                   {
+                                      Application = "Prowlin.Console",
+                                      Description = "Testing",
+                                      Event = "Some Event",
+                                      Priority = NotificationPriority.High,
+                                      Url = "http://www.nnihlen.com/blog"
+                                  };
+    notification.AddApiKey("<your-very-secret-apikey-goes-here>");
 
-<h3>Rather Drive Stick?</h3>
+    ProwlClient prowlClient = new ProwlClient();
+    NotificationResult notificationResult = prowlClient.SendNotification(notification);
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+    System.Console.WriteLine("Remaing number of messages: {0}", notificationResult.RemainingMessageCount.ToString());
+  </code>
+</pre>
 
-<h3>Authors and Contributors</h3>
+<h4>Command Line</h4>
+<pre>
+  <code>
+      > ProwlinCmd -k one_apikey -e "event X" -a "Application Y"
+      > ProwlinCmd -k apikey_one,apikey_two,... -e "event X" -a "Application Y"
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+      Options:
+        -k, -key                APIKEY(s)       Prowl API key, one or many separated by commas
+        -a, -application        APPLICATION     Application
+        -e, -event              EVENT           Event
+        -d, -description        DESCRIPTION     Description
+        -p, -priority           PRIORITY        Priority - VERYLOW, MODERATE, NORMAL(default), HIGH, EMERGENCY
+        -u, -url                URL             Url    
+        -v, -verify             VERIFIY         Verification of key used in combination with -k (APIKEY)
+                                                and (optional) -p (PROVIDER KEY)
+        -r, -retrievetoken      RETRIVE/TOKEN   Get a registration token for use in retrieve/apikey and
+                                                the associated URL for the user to approve the request. Use together with -providerkey
+        -pro, -providerkey      PROVIDER KEY    ProviderKey  to use in conjunction with -r (retrieve/token)
+        -n, -newkey             GET APIKEY      Get new api key  to use in conjunction with -t (token) and
+                                                -pro (providerkey)
+        -h, -help               HELP            This screen
+  </code>
+</pre>
 
-<h3>Support or Contact</h3>
+<h3>Dependencies</h3>
+<p>
+  <ul>
+    <li>xUnit for unit tests</li>
+    <li>Args for parsing command line arguments</li>
+    <li>.Net framework 4</li>
+  </ul>
+</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact support@github.com and we’ll help you sort it out.</p>
       </section>
     </div>
 
