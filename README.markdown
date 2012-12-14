@@ -3,7 +3,7 @@
 
 The purpose of Prowlin is to provide a .Net library and command line tool for sending notifictions to iPhone's/iPad's using the Prowl service and app, check it out at http://www.prowlapp.com.
 
-Prowlin consists of two parts. 
+Prowlin consists of two parts.
 
 1) A .Net library (dll) that can be used from any .Net code
 
@@ -16,7 +16,7 @@ Get the binaries [here](https://github.com/nippe/Prowlin/downloads) or get the c
 
 Usage
 -----
-This blog post shows a sample on how to use Prowlin: http://www.nnihlen.com/blog/archive/2011/06/02/notifications-to-iphone-ipad-using_prowl-and-prowlin-in-net.aspx
+This blog post shows a sample on how to use Prowlin: http://hardcoded.se/2011/06/03/notifications-to-iphoneipad-using-prowl-and-prowlin-in-net-2/
 ### Code
 
 
@@ -34,7 +34,7 @@ This blog post shows a sample on how to use Prowlin: http://www.nnihlen.com/blog
 	  NotificationResult notificationResult = prowlClient.SendNotification(notification);
 
 	  System.Console.WriteLine("Remaing number of messages: {0}", notificationResult.RemainingMessageCount.ToString());
-	
+
 
 ### Command Line
 
