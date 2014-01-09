@@ -26,7 +26,7 @@ This blog post shows a sample on how to use Prowlin: http://hardcoded.se/2011/06
  	                                    Description = "Testing",
  	                                    Event = "Some Event",
  	                                    Priority = NotificationPriority.High,
- 	                                    Url = "http://www.nnihlen.com/blog"
+ 	                                    Url = "http://hardcoded.se"
  	                                };
 	  notification.AddApiKey("<your-very-secret-apikey-goes-here>");
 
